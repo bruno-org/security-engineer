@@ -338,9 +338,12 @@ em vez de ser dado como certo no silêncio.
 ## Reporte e versões
 
 Achou problema na própria skill? Instrução insegura, padrão fraco, checagem de aceite que passa
-quando deveria falhar? O `SECURITY.md` tem o processo de reporte e o prazo de resposta. Se o que
-você achou não se encaixa lá, abra uma issue pública. Os dois canais ficam no repositório em
-https://github.com/bruno-org/security-engineer (marcador, troque pela URL do repositório).
+quando deveria falhar?
+**[Reporte em canal privado](https://github.com/bruno-org/security-engineer/security/advisories/new).**
+O `SECURITY.md` tem o processo e os prazos de resposta.
+
+Se o que você achou não é problema de segurança, [abra uma
+issue](https://github.com/bruno-org/security-engineer/issues/new).
 
 A versão fica no campo `version` do `SKILL.md`, e o `CHANGELOG.md` registra o que mudou em cada uma.
 Orientação de segurança envelhece: algoritmo é descontinuado, padrão é superado, recurso de provedor

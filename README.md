@@ -320,9 +320,12 @@ verification instead of quietly assumed to be fine.
 ## Reporting and versions
 
 Found a problem in the skill itself, an unsafe instruction, a weak default, an acceptance check that
-passes when it should fail? `SECURITY.md` has the reporting process and the expected response time.
-If what you found is not there, open a public issue for it. Both channels live in the repository at
-https://github.com/bruno-org/security-engineer.
+passes when it should fail?
+**[Report it privately](https://github.com/bruno-org/security-engineer/security/advisories/new).**
+`SECURITY.md` has the process and the response times.
+
+If what you found is not a security problem, [open an
+issue](https://github.com/bruno-org/security-engineer/issues/new).
 
 The release is identified by the `version` field in `SKILL.md`, and `CHANGELOG.md` records what
 changed in each one. Security guidance ages: algorithms get deprecated, defaults get superseded,

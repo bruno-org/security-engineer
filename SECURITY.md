@@ -50,12 +50,13 @@ other sample code.
 
 ## How to report
 
-**Repository:** https://github.com/bruno-org/security-engineer.
+**[Report a vulnerability privately](https://github.com/bruno-org/security-engineer/security/advisories/new)**
 
-**GitHub private security advisory.** Open the **Security** tab of that repository and choose
-**Report a vulnerability**. The report is visible only to you and the maintainer, it needs a GitHub
-account and nothing else, and it is the single channel for everything in the in-scope list. Private
-vulnerability reporting has to be enabled in the repository settings for this channel to work.
+That link opens a private security advisory. It is visible only to you and the maintainer, it needs
+a GitHub account and nothing else, and it is the single channel for everything in the in-scope list.
+
+For anything in the out-of-scope list, [open a public
+issue](https://github.com/bruno-org/security-engineer/issues/new).
 
 Reporters MUST NOT open a public issue, discussion, or pull request for a suspected problem in the
 guidance before it has been discussed privately. A public issue naming the file and the flaw is a
