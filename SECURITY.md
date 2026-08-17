@@ -2,9 +2,9 @@
 
 ## What this package is
 
-This package has two parts, and they carry different risk.
+This package has three parts, and they carry different risk.
 
-**Instructions.** The skill file, eight reference documents, and three templates. Markdown that an
+**Instructions.** The skill file, nine reference documents, and three templates. Markdown that an
 agent reads and acts on. Nothing here runs by itself.
 
 **Reference artifacts.** The `assets/` directory ships working code meant to be copied into a
@@ -12,10 +12,18 @@ project: a shell script that makes outbound HTTP requests, a SQL file that creat
 database privileges, a CI workflow that runs containers, and a test file that connects to a
 database. Read any of them before you run it, as `assets/README.md` states.
 
-That shapes the risk in two directions. Guidance that is wrong, stale, or unsafe is the primary
+**The harness.** The `evals/` directory holds two Python programs used to test this package, and the
+fixtures they score. `validate.py` reads files and makes no network call. `run.py` invokes the local
+`claude` command line tool, which is a paid, authenticated call, and it sends the fixture contents to
+that model. Neither is needed to use the skill, and neither is executed by it. The fixtures under
+`evals/cases/*/vulnerable/` are deliberately insecure by design: they are data, never imported or
+run, and a scanner pointed at this directory will report them.
+
+That shapes the risk in three directions. Guidance that is wrong, stale, or unsafe is the primary
 concern, because an agent will follow it and a developer will ship it. Code in `assets/` carries the
 ordinary risk of code, with the added hazard that a security example is trusted more readily than
-other sample code.
+other sample code. The harness carries a quieter risk: if it reports a pass while the material it is
+scoring is broken, every claim that rests on it becomes false.
 
 ## In scope
 
@@ -28,6 +36,10 @@ other sample code.
 - **An acceptance check that passes while the control is broken.** Anything in
   `references/verification.md` or the templates that reports success on a system that is not
   actually protected.
+- **A harness result that cannot be trusted.** An eval case whose repaired variant still carries the
+  defect, a signature that matches wording rather than the defect and so passes on a broken answer,
+  or a check in `validate.py` that cannot fail. A green suite that proves nothing is worse than no
+  suite, because it is quoted.
 - **An instruction that could push an agent into unsafe behavior.** Touching a live environment,
   running an intrusive scan without authorization, writing a gap register or probe output into a
   public repository, disabling a control to make a test pass, bypassing an authentication challenge

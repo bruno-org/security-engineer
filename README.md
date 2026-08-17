@@ -131,8 +131,11 @@ Three habits close both halves, and this skill will not skip them:
 
 1. **Every layer gets a decision.** All thirteen above, every time, so nothing survives by never
    being looked at. Nothing is left blank, because blank is where gaps live.
-2. **Every mandatory control ships with a check that proves it.** Runnable, specific, and attached
-   to the moment it runs. If you cannot say how to verify it, you wrote a wish.
+2. **Every mandatory control ships with a check that proves it, and the check is proven able to
+   fail.** Runnable, specific, and attached to the moment it runs. If you cannot say how to verify
+   it, you wrote a wish. And a check nobody has watched go red is an assumption: break the control
+   on purpose once, confirm the check catches it, put it back. That single minute is where checks
+   are found to be pointed at a mock instead of the real policy.
 3. **Protection you never feel comes first.** Invisible controls before friction, always. Security
    that breaks the product gets reverted by Friday, and reverted security protects nobody.
 
@@ -144,7 +147,7 @@ Three habits close both halves, and this skill will not skip them:
 |---|---|
 | An idea, nothing built | A security plan before the first line of code: threat model, per-layer decisions, and secure defaults that become the definition of done |
 | A project already underway | The current baseline, what is critical now, and guardrails so everything built from here is right by default |
-| One feature or pull request | A fast answer: which layers it touches, which defaults apply, what must be true before it merges |
+| One feature or pull request | A fast answer: which layers this change actually reaches, which defaults apply, and what must be true before it merges. Findings clear a precision bar first, so you get the ones that are real and reachable instead of a list of maybes |
 | About to go live | A blocking pre-launch gate covering what an automated attacker tries first |
 
 It gives direction to every part of the build: frontend, backend, data, identity, infrastructure,
@@ -202,6 +205,11 @@ Copy this directory into your agent's skills folder:
 ```
 
 Then start a new session. That is the whole installation.
+
+`evals/` belongs to whoever maintains this package, not to using it. Nothing in the skill depends on
+it, so you can leave it out of an install. If you do copy it, know what is in it: its fixtures are
+deliberately vulnerable files kept there to be scored, they are never imported or executed by
+anything, and a scanner pointed at your skills folder will report them.
 
 ---
 

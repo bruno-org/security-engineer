@@ -17,6 +17,7 @@ Every item here is something an automated attacker tries within the first hour o
 - [ ] Access rules enabled on every table, collection, and bucket, including anything added in the last week
 - [ ] Rules deny by default and are scoped per owner or tenant, on read **and** on write
 - [ ] Cross-tenant test passes: account A cannot read, update, or delete account B's records, verified with a real client credential against the real rules
+- [ ] That test was seen failing once, against a deliberately broken policy, so its pass means something. See the negative control in `references/verification.md`
 - [ ] Every foreign key crossing a tenant boundary is enforced in the schema
 - [ ] Privileged fields (role, plan, balance, verification, subscription state) are not writable by clients at the privilege level
 - [ ] Multi-factor enforced on every administrative and infrastructure account

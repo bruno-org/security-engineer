@@ -144,9 +144,12 @@ São três hábitos que fecham as duas metades, e esta skill não abre mão de n
 1. **Toda camada recebe uma decisão.** As treze de cima, todas as vezes, para que nada sobreviva
    simplesmente por nunca ter sido olhado. Nada fica em branco, porque é no branco que a falha se
    esconde.
-2. **Todo controle obrigatório vem com uma checagem que o prova.** Executável, específica e amarrada
-   ao momento em que deve rodar. Se você não sabe dizer como verificar, você não escreveu um
-   controle, escreveu um desejo.
+2. **Todo controle obrigatório vem com uma checagem que o prova, e essa checagem prova que sabe
+   reprovar.** Executável, específica e amarrada ao momento em que deve rodar. Se você não sabe
+   dizer como verificar, você não escreveu um controle, escreveu um desejo. E checagem que ninguém
+   viu ficar vermelha é suposição: quebre o controle de propósito uma vez, confirme que a checagem
+   pegou, e desfaça. É nesse minuto que se descobre que a checagem apontava para um mock em vez da
+   política de verdade.
 3. **Primeiro vem a proteção que ninguém sente.** Controle invisível antes de fricção, sempre.
    Segurança que atrapalha o produto é removida na primeira sexta-feira, e segurança removida não
    protege ninguém.
@@ -159,7 +162,7 @@ São três hábitos que fecham as duas metades, e esta skill não abre mão de n
 |---|---|
 | Uma ideia, nada construído ainda | Um plano de segurança antes da primeira linha de código: modelo de ameaça, decisão camada por camada e padrões seguros que viram a sua definição de pronto |
 | Projeto já em andamento | O retrato de como está hoje, o que é crítico agora, e trilhos para que tudo daqui em diante saia certo por padrão |
-| Uma feature ou um pull request | Resposta rápida: que camadas aquilo toca, que padrões se aplicam e o que precisa ser verdade antes de dar merge |
+| Uma feature ou um pull request | Resposta rápida: que camadas aquela mudança realmente alcança, que padrões se aplicam e o que precisa ser verdade antes de dar merge. Todo achado passa por uma régua de precisão antes, então você recebe o que é real e alcançável, não uma lista de talvez |
 | Prestes a subir para produção | Um portão de pré-lançamento que trava a subida, cobrindo o que um atacante automatizado tenta primeiro |
 
 Ela orienta todas as frentes: frontend, backend, dados, identidade, infraestrutura, borda,
@@ -221,6 +224,11 @@ Copie este diretório para a pasta de skills do seu agente:
 ```
 
 Depois abra uma sessão nova. A instalação é essa.
+
+A pasta `evals/` é de quem mantém este pacote, não de quem usa. Nada na skill depende dela, então
+pode ficar de fora da instalação. Se você copiar junto, saiba o que tem lá dentro: os fixtures são
+arquivos vulneráveis de propósito, guardados ali para serem pontuados, nunca são importados nem
+executados por nada, e um scanner apontado para a sua pasta de skills vai acusar todos eles.
 
 ---
 
