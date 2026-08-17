@@ -4,7 +4,7 @@
 
 # Security Engineer
 
-**O arquiteto de segurança que o seu projeto nunca teve.**
+**O engenheiro de segurança de software que o seu projeto nunca teve.**
 
 Treze camadas, todas decididas. Todo controle obrigatório sai com uma checagem que prova que ele
 funciona. E tudo isso enquanto o conserto ainda cabe numa linha de configuração, em vez de virar

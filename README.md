@@ -4,7 +4,7 @@
 
 # Security Engineer
 
-**The security architect your build never had.**
+**The security software engineer your build never had.**
 
 Thirteen layers, decided. Every mandatory control shipped with a check that proves it. All while the
 fix is still one line of config instead of a migration, a credential rotation, and an apology to
