@@ -15,10 +15,10 @@ system is designed and built, and makes it come out right the first time.
 
 ![License MIT](https://img.shields.io/badge/license-MIT-black)
 ![Agent skill](https://img.shields.io/badge/type-agent%20skill-blue)
-![Version 1.0.0](https://img.shields.io/badge/version-1.0.0-black)
+![Version 1.1.0](https://img.shields.io/badge/version-1.1.0-black)
 ![Updated 2026-08-17](https://img.shields.io/badge/updated-2026--08--17-brightgreen)
 
-<sub>Last updated <b>2026-08-17 10:20 (UTC-3)</b>, version <b>1.0.0</b></sub>
+<sub>Last updated <b>2026-08-17 10:33 (UTC-3)</b>, version <b>1.1.0</b></sub>
 
 [Portugu&ecirc;s do Brasil](README.pt-BR.md)
 

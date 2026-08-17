@@ -1,7 +1,7 @@
 ---
 name: security-engineer
 description: Security architecture and hardening for software being designed, built, or shipped. Use when starting a project, choosing a stack or host, adding authentication, payments, uploads, database tables, APIs, admin areas, or CI/CD; when preparing a production deploy; when reviewing a feature, pull request, or configuration for security; or when asked about vulnerabilities, threat models, access rules, leaked secrets, exposed data, rate limiting, tenant isolation, or privacy and compliance obligations.
-version: 1.0.0
+version: 1.1.0
 license: MIT
 ---
 

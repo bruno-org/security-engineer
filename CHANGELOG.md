@@ -19,7 +19,10 @@ lie: the `version` field in `SKILL.md`, the entry below, and the version and dat
 
 ---
 
-## [Unreleased]
+## [1.1.0] - 2026-08-17
+
+The package now ships the harness it is tested with, and the method now requires
+that an acceptance check be seen failing before it counts as passing.
 
 ### Added
 

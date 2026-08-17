@@ -16,10 +16,10 @@ ele já nascer certo desde o início.
 
 ![Licenca MIT](https://img.shields.io/badge/licenca-MIT-black)
 ![Skill de agente](https://img.shields.io/badge/tipo-skill%20de%20agente-blue)
-![Versao 1.0.0](https://img.shields.io/badge/versao-1.0.0-black)
+![Versao 1.1.0](https://img.shields.io/badge/versao-1.1.0-black)
 ![Atualizado 17-08-2026](https://img.shields.io/badge/atualizado-17--08--2026-brightgreen)
 
-<sub>Última atualização <b>17/08/2026 10:20 (UTC-3)</b>, versão <b>1.0.0</b></sub>
+<sub>Última atualização <b>17/08/2026 10:33 (UTC-3)</b>, versão <b>1.1.0</b></sub>
 
 [English](README.md)
 
