@@ -1,0 +1,174 @@
+# ============================================================================
+# ci-security.yml
+# Pipeline controls from layer 8 (CI/CD), layer 9 (secrets), and layer 10
+# (dependencies) of references/layer-playbooks.md.
+#
+# Install at .github/workflows/security.yml
+#
+# EVERY PIN BELOW IS A PLACEHOLDER. Actions are pinned to 40 zeros, container
+# images to 64 zeros. Replace all of them before the first run. The workflow
+# fails until you do, which is deliberate: a placeholder that silently resolved
+# to something would be worse than a broken run.
+#
+#   Resolve an action tag to its commit SHA:
+#     gh api repos/actions/checkout/commits/v4.2.2 --jq .sha
+#
+#   Resolve an image tag to its digest:
+#     docker buildx imagetools inspect zricethezav/gitleaks:v8.28.0 \
+#       --format '{{ .Manifest.Digest }}'
+#
+# Re-pin on a schedule, the same way you update any other dependency. A pinned
+# SHA is code you reviewed once; a moving tag is code you never review, running
+# with your pipeline's privileges.
+#
+# The trigger is pull_request, never pull_request_target. The second one runs
+# with repository secrets in the context of a fork's code, which hands write
+# credentials to anyone who can open a pull request.
+#
+# This workflow declares no secrets at all, so there is nothing here for a fork
+# run to exfiltrate. Keep it that way: deploy credentials belong in the deploy
+# job, not in the scanning jobs.
+# ============================================================================
+
+name: security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Mondays 04:17 UTC. New advisories land against code nobody touched, so
+    # this catches what push-triggered runs cannot.
+    - cron: '17 4 * * 1'
+
+# Least privilege for the whole workflow. Individual jobs raise it only where a
+# specific step needs more, and none here do.
+permissions:
+  contents: read
+
+# A new push supersedes the previous run for the same ref. Saves minutes, and
+# minutes are the quota an attacker burns for free on a public repository.
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # --------------------------------------------------------------------------
+  # Secrets: scan the entire history, not the working tree.
+  # A credential removed in a later commit is still served by the object it was
+  # committed in, forever, to anyone who clones.
+  # --------------------------------------------------------------------------
+  secret-scan:
+    name: Secret scan (full history)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@0000000000000000000000000000000000000000 # REPLACE: actions/checkout v4.2.2
+        with:
+          # The default is a shallow clone of one commit, which scans one commit
+          # and reports clean on a repository full of leaked keys.
+          fetch-depth: 0
+          # Do not leave the job token in .git/config where later steps and
+          # third-party actions can read it.
+          persist-credentials: false
+
+      - name: gitleaks
+        run: |
+          docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/repo" \
+            zricethezav/gitleaks@sha256:0000000000000000000000000000000000000000000000000000000000000000 \
+            detect --source=/repo --redact --no-banner --exit-code 1
+          # --user runs the container as the account that owns the checkout, so
+          # git accepts the repository as its own and the scan leaves no
+          # root-owned file behind in the workspace for later steps.
+          # --redact keeps the matched value out of the job log. Without it, a
+          # public build log republishes the exact credential you were looking
+          # for, which is the one place worse than the commit it came from.
+          # --exit-code 1 makes a finding fail the job.
+          # gitleaks 8.x spells this "detect"; newer builds spell it "git".
+
+      # Findings are handled by rotating first and cleaning history second.
+      # Cleaning without rotating accomplishes nothing: harvesting bots already
+      # have it.
+
+  # --------------------------------------------------------------------------
+  # Dependencies: block on high severity, on every commit and on the schedule.
+  # --------------------------------------------------------------------------
+  dependency-audit:
+    name: Dependency audit (fails on high)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@0000000000000000000000000000000000000000 # REPLACE: actions/checkout v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@0000000000000000000000000000000000000000 # REPLACE: actions/setup-node v4.1.0
+        with:
+          node-version: '22' # PLACEHOLDER: match the version you deploy
+
+      - name: npm audit
+        # Exit code is non-zero when anything at or above the level is found, so
+        # the job fails without extra scripting.
+        # --omit=dev keeps build-only packages from blocking a release. Drop it
+        # if any developer dependency ends up in the shipped bundle.
+        run: npm audit --audit-level=high --omit=dev
+
+      # Other ecosystems, same job, same failure rule:
+      #   Python: pip-audit --strict --requirement requirements.txt
+      #   Go:     govulncheck ./...
+      #   Mixed:  osv-scanner --lockfile=package-lock.json --lockfile=go.sum
+      #
+      # An unfixable finding is documented with a reason and a date, in the
+      # repository, next to the ignore rule that suppresses it. An ignore rule
+      # with no expiry is a permanent exception nobody revisits.
+
+  # --------------------------------------------------------------------------
+  # Static analysis: dangerous patterns in your own code.
+  # Finds the volume. Reading the code finds the logic flaws, which is most of
+  # what matters, so this complements review instead of replacing it.
+  # --------------------------------------------------------------------------
+  static-analysis:
+    name: Static analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@0000000000000000000000000000000000000000 # REPLACE: actions/checkout v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: semgrep
+        run: |
+          docker run --rm -v "$PWD:/src" -w /src \
+            semgrep/semgrep@sha256:0000000000000000000000000000000000000000000000000000000000000000 \
+            semgrep scan --config=p/default --error --metrics=off --quiet
+          # --error   turns any finding into a failed job.
+          # --metrics=off keeps your findings out of the vendor's telemetry.
+          # Narrow the ruleset per language once the baseline is clean, for
+          # example p/owasp-top-ten, p/nodejsscan, or p/python.
+
+      # CodeQL is the alternative for supported languages. It needs an elevated
+      # token, so add it as a separate job with its own scope rather than
+      # widening the workflow-level permissions block:
+      #   permissions:
+      #     contents: read
+      #     security-events: write
+
+# ============================================================================
+# Not covered here, still required by layer 8:
+#
+#   - The deploy job publishes an explicit artifact, meaning an allowlist of the
+#     files that ship. Deploying the working directory publishes tests,
+#     configuration, lockfiles, and internal notes.
+#   - Production deploys are gated by a protected branch with review required
+#     and no direct push. That is a repository setting, not a workflow file.
+#   - Deploy credentials live in the deploy job only, scoped per environment. A
+#     staging key must not open production.
+#   - Secret scanning and push protection are enabled on the repository host, so
+#     the block happens before the push rather than after it.
+#
+# Verify the artifact from outside after deploying: assets/probe.sh
+# ============================================================================
