@@ -139,8 +139,19 @@ signature is usually too wide.
 
 Stated plainly, because a harness that oversells itself is worse than none.
 
+- **They are a regression harness, not a scoreboard.** Run the baseline arm and
+  a capable model catches most of these on its own, which is the expected
+  result: a planted defect in a thirty line file is the easy half of the job.
+  What the skill adds is coverage, the walk that visits the layer nobody
+  remembers, the live setting nobody read, and the ranking of what a control
+  costs the humans using the product. None of that fits in one file. Use this
+  suite to catch material that rots, not to claim a number.
 - **They score one file at a time.** Most real defects are relationships between
   files, and no case here reproduces that.
+- **The answer language is pinned to English**, so one scorer can read every run.
+  A run therefore does not exercise the rule that the skill answers in the
+  user's own language, which is a separate obligation with its own consequences
+  when it fails.
 - **They do not exercise the live surfaces.** Reading a real dashboard, checking
   which account is connected, confirming a setting is actually on: none of that
   is testable offline, and it is a large part of what the skill does.

@@ -322,8 +322,13 @@ the control on purpose once and watch the check go red. That single minute is
 where checks are found to be pointed at a mock, at the working tree instead of
 the history, or at a route list that stopped being updated.
 
-`evals/README.md` states what the suite does not prove, which is worth reading
-before quoting a result.
+**What it is not:** a scoreboard. Run the baseline arm and a capable model catches
+most of these on its own, which is the expected result, because a planted defect
+in a thirty line file is the easy half of the job. What the skill adds is the
+walk that visits the layer nobody remembers, the live setting nobody read, and
+the ranking of what a control costs the people using the product. None of that
+fits in one file. `evals/README.md` states the rest of what the suite does not
+prove, and it is worth reading before quoting a result.
 
 ---
 

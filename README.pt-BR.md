@@ -341,8 +341,13 @@ controle de propósito uma vez e veja a checagem ficar vermelha. É nesse minuto
 que se descobre que a checagem apontava para um mock, para o estado atual em vez
 do histórico, ou para uma lista de rotas que parou de ser atualizada.
 
-O `evals/README.md` diz o que a bateria **não** prova, e vale ler isso antes de
-citar qualquer resultado.
+**O que ela não é:** placar. Rode o braço baseline e um modelo bom pega quase
+todos esses defeitos sozinho, e isso é o resultado esperado, porque defeito
+plantado em arquivo de trinta linhas é a parte fácil do serviço. O que a skill
+acrescenta é a passada que visita a camada de que ninguém lembra, a configuração
+viva que ninguém leu, e a conta de quanto cada controle custa para quem usa o
+produto. Nada disso cabe num arquivo só. O `evals/README.md` diz o resto do que
+a bateria **não** prova, e vale ler antes de citar qualquer resultado.
 
 ---
 

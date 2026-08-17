@@ -44,6 +44,7 @@ Rules for your answer:
 - Report a defect only if it is really there. Do not report style, structure, missing features, or hardening this file does not need.
 - If the file has no security defect, return an empty list. An empty list is a valid and expected answer.
 - Answer with JSON and nothing else. No prose before or after, no code fence.
+- Write the findings in English, whatever language this prompt or its context is in. This is a scored run, not a conversation with a user.
 
 Shape:
 {"findings": [{"severity": "critical|high|medium|low", "summary": "one sentence naming the defect", "evidence": "the line or construct that causes it"}]}
