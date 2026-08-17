@@ -1,0 +1,16 @@
+{
+  "id": "01-frontend-client-side-gate",
+  "title": "The browser decides who is an administrator, and renders user text as markup",
+  "layer": 1,
+  "layer_name": "Frontend",
+  "defaults": [
+    2,
+    5
+  ],
+  "fixture": "AdminPanel.jsx",
+  "signature": [
+    "(?i)dangerouslySetInnerHTML|cross[- ]site scripting|\\bXSS\\b",
+    "(?i)localStorage|client[- ]side (check|gate|guard|authoriz)|trusts the (browser|client)|hidden (in|from) the (ui|interface)"
+  ],
+  "why": "Hiding a control in the interface is presentation, not authorization. The endpoint stays open to anyone who calls it directly, and the profile text is rendered as markup."
+}

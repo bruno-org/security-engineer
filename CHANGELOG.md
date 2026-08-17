@@ -19,6 +19,40 @@ lie: the `version` field in `SKILL.md`, the entry below, and the version and dat
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- `evals/`, the harness this package is tested with. Fourteen cases, one per layer, each a pair: a
+  file carrying a single planted defect and the same file with that defect repaired. A case passes
+  only when the defect is reported on the first and left alone on the second, so a check that fires
+  on everything fails the suite instead of passing it.
+- `evals/run.py`, which scores those pairs through the `claude` command line tool, with three arms:
+  the skill loaded from the working copy, the skill asked for by name to confirm an installed copy
+  loads, and no skill at all to measure what it adds. Also `--self-test`, which proves the scorer
+  itself can fail without calling a model, and `--dry-run`, which checks the cases are well formed.
+- `evals/validate.py`, integrity checks that need no model and no network: the release stamp agrees
+  in all four places, the two READMEs stay mirrors, no document points at a path that does not
+  exist, every layer playbook ends in an acceptance check, every layer has a case, and no case has
+  variants that are secretly identical.
+- The negative control in `references/verification.md`: an acceptance check counts as passing only
+  after the control it watches has been broken on purpose once and the check was seen going red.
+  Includes the six checks that most often pass while pointed at the wrong thing, and how to break
+  each one. Rule 5 in `SKILL.md` now carries the same obligation.
+- `references/change-review.md`, Mode C on a diff: what a diff hides, which layers each class of
+  change actually reaches, the five questions a finding clears before it is written down, the
+  categories that are never reported, and the merge gate the review produces instead of a list.
+- Dependency triage in layer 10, so a scanner queue becomes an ordered plan: confirmed exploitation
+  in the wild first, then reachability in production, then likelihood of the attempt, then whether a
+  fix can actually be taken. Suppressions now expire.
+
+### Changed
+
+- The acceptance check for layer 10 asks for the triaged queue rather than a severity count.
+- Step 5 of the workflow now states the precision bar for reported findings.
+
+---
+
 ## [1.0.0] - 2026-08-17
 
 Initial release. The package is the skill file, eight reference documents, and three templates read

@@ -1,0 +1,14 @@
+{
+  "id": "09-secrets-in-client-bundle",
+  "title": "Privileged key exported to the browser bundle",
+  "layer": 9,
+  "layer_name": "Secrets",
+  "defaults": [
+    4
+  ],
+  "fixture": "supabaseClient.ts",
+  "signature": [
+    "(?i)service[_ ]?role|NEXT_PUBLIC|(key|secret|credential).{0,40}(bundle|browser|client|shipped|exposed)|hardcoded|bypass(es)? (row|rls|polic)"
+  ],
+  "why": "Anything prefixed for the client is compiled into the bundle any visitor can read. The service role key ignores every access policy, so publishing it hands over the whole database."
+}

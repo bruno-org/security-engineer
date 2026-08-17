@@ -1,0 +1,13 @@
+{
+  "id": "12-privacy-collection-and-retention",
+  "title": "Personal data collected without a purpose, forwarded to analytics, never erased",
+  "layer": 12,
+  "layer_name": "Privacy and compliance",
+  "defaults": [],
+  "fixture": "signup.js",
+  "signature": [
+    "(?i)minimi[sz]|(collect|stor).{0,40}(not|never) (used|needed)|purpose|excessive (data|collection)",
+    "(?i)personal data.{0,40}(analytics|third[- ]party|vendor)|\\bPII\\b.{0,30}(sent|shared|forwarded)|retention|erasure|soft[- ]delete|never (deleted|removed)|right to (be forgotten|erasure)"
+  ],
+  "why": "Data that is collected is data that leaks. Every field kept without a purpose, every copy handed to a vendor, and every row that survives a deletion request is exposure the product never needed."
+}

@@ -1,0 +1,14 @@
+{
+  "id": "02-backend-api-idor",
+  "title": "Record fetched by identifier with no ownership condition",
+  "layer": 2,
+  "layer_name": "Backend and API",
+  "defaults": [
+    3
+  ],
+  "fixture": "invoices.route.js",
+  "signature": [
+    "(?i)\\bIDOR\\b|object[- ]level authoriz|ownership (check|condition)|owner_id|account_id|belongs to another|any (authenticated )?user can (read|fetch|view|access)"
+  ],
+  "why": "The session is verified, so the route looks protected. Nothing ties the row to the caller, so changing the number in the URL returns someone else's invoice."
+}

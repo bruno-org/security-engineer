@@ -2,10 +2,45 @@
 
 A control that cannot be proven is a wish. Every MUST in the plan carries an acceptance check, and the check is written at the same moment as the control, not later.
 
-Two rules govern this file:
+Three rules govern this file:
 
 1. **The load-bearing control gets the test.** Whatever single mechanism carries the most weight, usually the data access rules, is the one most likely to ship untested. Invert that.
 2. **Verify from the attacker's position, not the operator's.** An administrator console shows what the operator is allowed to see. It does not show what an anonymous caller can reach. The two views disagree more often than teams expect.
+3. **A check nobody has watched fail is an assumption.** See the negative control below. It is one extra minute per check and it is the difference between a test suite and a decoration.
+
+---
+
+## The negative control
+
+Before a check counts as passing, make it fail on purpose once.
+
+Break the thing it is supposed to be watching, in a scratch branch or a local
+copy, run the check, and confirm it goes red. Then put it back and confirm it
+goes green. Both directions, in that order.
+
+| The check | How to break it on purpose | What a broken check looks like |
+|---|---|---|
+| Cross-tenant denial test | Disable the policy on the table, or run the query as the privileged role | Still green, because it was asserting against a mocked layer or an empty result set |
+| Unauthenticated access sweep | Remove the guard from one route | Still green, because the route table it enumerates is stale or hand-maintained |
+| Secret scanning in the pipeline | Commit a fake credential shaped like a real one, on a branch | Still green, because it scans the current state rather than the history, or the job continues on error |
+| Live probe for exposed paths | Point it at a path you know is published | Still green, because a single-page fallback answered and the size was never compared |
+| Rate limit | Call the endpoint past the limit from one address | Still green, because the limiter is keyed on something the caller controls |
+| Webhook signature check | Send an unsigned payload | Still green, because the framework parsed the body before the signature was computed over the raw bytes |
+
+This is where checks are actually found to be broken. The usual cause is not a
+wrong assertion, it is a check pointed at the wrong thing: a mock instead of the
+real policy, the working tree instead of the history, a route list that stopped
+being updated. All of them pass forever and prove nothing, and none of them look
+wrong when you read them.
+
+**Write the negative result down.** One line next to the acceptance check saying
+what was broken and that the check caught it. It is the only evidence that the
+green result means anything, and it is what a customer questionnaire is actually
+asking for when it asks how you know.
+
+**The same rule applies to this package.** Its own material is exercised against
+paired fixtures, one with a planted defect and one with the defect repaired, and
+a check that fires on both is treated as broken. See `evals/README.md`.
 
 ---
 

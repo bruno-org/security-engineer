@@ -1,0 +1,13 @@
+{
+  "id": "06-edge-plaintext-and-listing",
+  "title": "Site served over plaintext with directory listing and version disclosure",
+  "layer": 6,
+  "layer_name": "Edge: CDN, TLS, DNS, email",
+  "defaults": [],
+  "fixture": "nginx.conf",
+  "signature": [
+    "(?i)plain ?text|unencrypted|no (tls|https)|http to https|redirect.{0,20}https|\\bTLS\\b",
+    "(?i)autoindex|directory listing|server_tokens|version disclosur|banner"
+  ],
+  "why": "Everything on this host travels in the clear, the directory index publishes whatever lands in the web root, and the banner tells a scanner exactly which build to try."
+}

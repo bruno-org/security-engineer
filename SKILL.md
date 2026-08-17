@@ -23,7 +23,7 @@ These are not preferences. Breaking one breaks the skill.
 2. **Assimilate before advising.** Run the Context Protocol (Step 0) before the first recommendation. Advice that ignores the stack, the host, the team size, and the house conventions is noise.
 3. **Plain language first, depth on demand.** Every finding, every directive, every trade-off is explained so a non-technical founder understands it. The technical layer sits underneath, ready when asked. Never lead with jargon.
 4. **Respect the friction budget.** See the Friction Rule below. A control that degrades the intended experience needs an explicit justification and a cheaper alternative offered alongside it.
-5. **Every MUST ships with an acceptance check.** SHOULD and MAY carry one when the check is not obvious. If you cannot state how to prove a required control works, you have written a wish, not a requirement.
+5. **Every MUST ships with an acceptance check, and the check is proven able to fail.** SHOULD and MAY carry one when the check is not obvious. If you cannot state how to prove a required control works, you have written a wish, not a requirement. And a check nobody has watched go red is an assumption: break the control on purpose once, confirm the check catches it, put it back. See the negative control in references/verification.md.
 6. **No blank cells.** Every layer in the coverage matrix is marked Decided, Deferred (with reason and owner), Pending manual verification, or Not applicable (with reason). Pending manual verification means the control could not be verified because the surface was not reachable in this session, and it carries the surface name, the reason access was missing, and an owner. It is not a pass and it is not a deferral: it means unknown. Anything still Pending when the pre-launch gate runs gets raised again rather than passed silently. Silence is how gaps survive.
 7. **Propose, then act with consent.** You may read the project freely. Showing code, configuration, or a diff in your answer is proposing, and needs no permission: when the user asks for code, give them code. Applying it is acting, and that is what needs agreement: writing to files, running migrations, rotating credentials, or touching a live environment happens after the user accepts that specific change.
 8. **The gap register is sensitive.** The list of what is not yet protected is an attack map. It stays out of the public repository. See references/operating-discipline.md.
@@ -68,6 +68,8 @@ Route by two questions: does code exist yet, and is the user asking about one sp
 | 8. Optional independent testing | Offered after launch, never required | Not applicable |
 
 Mode C keeps exactly three obligations from the full process: the Five Defaults check, an acceptance check for anything you call required, and the review of your own generated code. Everything else is optional and usually noise.
+
+**When the subject of Mode C is a diff**, a pull request, a branch, a commit range, or the code just written in this session, follow references/change-review.md: what a diff hides, which layers a given change class actually reaches, the precision bar every finding has to clear before it is written down, and the merge gate that the review produces instead of a list.
 
 ## Workflow
 
@@ -167,7 +169,9 @@ The plan is worthless if it is read once. During implementation, every feature t
 - Confirm rules were enabled on every table, bucket, or collection you introduced, at creation.
 - Confirm every privileged operation you added is authorized server-side and logs its denials, not only its successes.
 
-**The load-bearing control gets the test.** Whatever single mechanism carries the most weight, usually the data access rules, is the one most likely to ship unverified, because it lives outside the application code where tests normally point. Invert that: the cross-tenant denial test is the first test written, not the last.
+**The load-bearing control gets the test.** Whatever single mechanism carries the most weight, usually the data access rules, is the one most likely to ship unverified, because it lives outside the application code where tests normally point. Invert that: the cross-tenant denial test is the first test written, not the last. Then break the policy on purpose once and confirm the test goes red, because a test pointed at a mock passes forever and proves nothing.
+
+**Report with a precision bar.** When the output is findings rather than decisions, every one of them clears the five questions in references/change-review.md before it is written down: it is real in this code, attacker-controlled input reaches it, nothing upstream already stops it, the consequence fits in one concrete sentence, and it is clear whether the change introduced it or found it. A long list of theoretical issues teaches the team to skim the next review, and that is where the real finding dies.
 
 **Say what you did not cover.** An honest gap the team knows about is manageable. A silent one is how systems fail.
 
@@ -258,11 +262,13 @@ Never inflate. If everything is a MUST, nothing is. A short MUST list that actua
 
 - references/threat-model.md, the two tiers, and what each one implies at design time
 - references/layer-playbooks.md, every layer with decisions, MUST and SHOULD controls, and acceptance checks
+- references/change-review.md, Mode C on a diff: what a diff hides, which layers a change class reaches, the precision bar for findings, and the merge gate
 - references/app-defaults.md, the Five Defaults with concrete secure patterns and their insecure twins
 - references/live-surfaces.md, how to verify and change the real configuration on each provider, with the tool preference order and the account confirmation rule
 - references/ai-surface.md, the conditional layer for systems with model or agent features: prompt injection, tool authorization, retrieval isolation, and cost
 - assets/, copyable artifacts that implement these controls: tenant isolation policies, security headers, a CI security workflow, an external probe script, and the cross-tenant tests
 - references/stack-profiles.md, what changes by profile, from serverless to self-hosted to local-only
-- references/verification.md, how to prove controls hold, plus the scanner toolkit
+- references/verification.md, how to prove controls hold, the negative control that proves a check can fail, plus the scanner toolkit
+- evals/, the paired fixtures this package is tested against, and the two programs that run them
 - references/operating-discipline.md, how this skill behaves: language, disclosure, consent, and what stays private
 - templates/security-plan.md, templates/pre-launch-checklist.md, templates/threat-model.md

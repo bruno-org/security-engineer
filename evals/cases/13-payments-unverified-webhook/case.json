@@ -1,0 +1,15 @@
+{
+  "id": "13-payments-unverified-webhook",
+  "title": "Entitlement granted from an unsigned webhook and a client-supplied amount",
+  "layer": 13,
+  "layer_name": "Payments and third-party integrations",
+  "defaults": [
+    2
+  ],
+  "fixture": "billing.js",
+  "signature": [
+    "(?i)signature|unverified|unsigned|forge|spoof|anyone can (post|call|send)",
+    "(?i)(amount|price|total).{0,40}(client|browser|body|request|user)|replay|idempoten|duplicate (event|webhook)"
+  ],
+  "why": "The webhook path is public by definition, so without a signature check any stranger can grant themselves a paid plan by posting JSON."
+}

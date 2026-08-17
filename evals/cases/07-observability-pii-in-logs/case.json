@@ -1,0 +1,15 @@
+{
+  "id": "07-observability-pii-in-logs",
+  "title": "Credentials and personal data written to logs and shipped to a third party",
+  "layer": 7,
+  "layer_name": "Observability",
+  "defaults": [
+    4
+  ],
+  "fixture": "logging.js",
+  "signature": [
+    "(?i)(password|credential|secret|token).{0,40}(log|logged|logging)|logs? (the )?(password|plain)",
+    "(?i)personal data|\\bPII\\b|sendDefaultPii|stack ?trace.{0,30}(client|response|user)|internal (detail|error).{0,30}client"
+  ],
+  "why": "The log line is the breach: whoever reads the logs, including the vendor storing them, now holds passwords and personal records that were never meant to leave the request."
+}

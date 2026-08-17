@@ -1,0 +1,16 @@
+{
+  "id": "14-ai-surface-agent-tool",
+  "title": "Agent runs model-authored SQL on untrusted input and can mail the result out",
+  "layer": 14,
+  "layer_name": "AI surface (conditional layer)",
+  "defaults": [
+    2,
+    5
+  ],
+  "fixture": "agent.js",
+  "signature": [
+    "(?i)prompt injection|untrusted (content|input|text|page|html).{0,60}(prompt|model|context)|instruction.{0,30}(planted|embedded|injected)",
+    "(?i)arbitrary (sql|query|command)|(tool|function).{0,30}(authoriz|allowlist|permission)|exfiltrat|service[_ ]?role|acts? (as|with) (the )?(admin|service|elevated)"
+  ],
+  "why": "Fetched page content is instructions to the model, not data. Combined with a database tool that runs whatever the model writes and an outbound mail tool, a planted sentence on any crawled page becomes a data export."
+}

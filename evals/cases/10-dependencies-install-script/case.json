@@ -1,0 +1,15 @@
+{
+  "id": "10-dependencies-install-script",
+  "title": "Dependencies float and an install script fetches and runs remote code",
+  "layer": 10,
+  "layer_name": "Dependencies and supply chain",
+  "defaults": [
+    5
+  ],
+  "fixture": "package.json",
+  "signature": [
+    "(?i)postinstall|install script|curl.{0,30}(\\||sh|bash)|arbitrary code.{0,20}(install|build)",
+    "(?i)unpinned|floating|\\blatest\\b|caret|range|lock ?file|pin(ned)? (the )?version"
+  ],
+  "why": "Install scripts run with the developer's privileges before any code is reviewed, and a floating range means the build ships a version nobody chose."
+}

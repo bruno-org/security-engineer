@@ -1,0 +1,14 @@
+{
+  "id": "04-identity-jwt-unverified",
+  "title": "Token payload read without verifying the signature",
+  "layer": 4,
+  "layer_name": "Identity and authorization",
+  "defaults": [
+    2
+  ],
+  "fixture": "session.js",
+  "signature": [
+    "(?i)jwt\\.decode|(signature|token) (is )?(not|never) verif|without verif|unverified (token|jwt|signature)|forge|algorithms?\\b.*(option|specif|pin)|alg.{0,4}none"
+  ],
+  "why": "decode parses the token, it does not check the signature. Anyone can mint a payload claiming any user and any role."
+}

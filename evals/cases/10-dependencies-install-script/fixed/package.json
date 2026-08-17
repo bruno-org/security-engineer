@@ -1,0 +1,18 @@
+{
+  "name": "checkout-service",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js",
+    "audit": "npm audit --omit=dev && osv-scanner --lockfile=package-lock.json"
+  },
+  "dependencies": {
+    "express": "4.21.2",
+    "jsonwebtoken": "9.0.2",
+    "stripe": "17.5.0",
+    "sharp": "0.33.5"
+  },
+  "overrides": {},
+  "engines": {
+    "node": "22.x"
+  }
+}

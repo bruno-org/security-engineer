@@ -1,0 +1,15 @@
+{
+  "id": "05-infrastructure-container-root",
+  "title": "Container runs as root and bakes a credential into an image layer",
+  "layer": 5,
+  "layer_name": "Infrastructure and network",
+  "defaults": [
+    4
+  ],
+  "fixture": "Dockerfile",
+  "signature": [
+    "(?i)runs? as root|as the root user|non-?root|USER instruction",
+    "(?i)build (arg|argument)|ARG .{0,20}(password|secret|token|key)|(secret|credential|password).{0,40}(layer|image|history|baked)"
+  ],
+  "why": "A build argument survives in the image history, so anyone who can pull the image can read the credential. Root inside the container turns a code execution bug into host-adjacent access."
+}

@@ -19,7 +19,7 @@ ele já nascer certo desde o início.
 ![Versao 1.0.0](https://img.shields.io/badge/versao-1.0.0-black)
 ![Atualizado 17-08-2026](https://img.shields.io/badge/atualizado-17--08--2026-brightgreen)
 
-<sub>Última atualização <b>17/08/2026 01:59 (UTC-3)</b>, versão <b>1.0.0</b></sub>
+<sub>Última atualização <b>17/08/2026 10:20 (UTC-3)</b>, versão <b>1.0.0</b></sub>
 
 [English](README.md)
 
@@ -274,6 +274,7 @@ references/
   threat-model.md                   Os dois adversários, e o que cada um exige do projeto
   layer-playbooks.md                Treze camadas: decisões, controles, checagens, fricção
   app-defaults.md                   Os cinco padrões, com a versão segura e a versão furada
+  change-review.md                  Revisar um diff: o que ele esconde e a régua de cada achado
   stack-profiles.md                 O que muda de serverless a servidor próprio e ferramenta local
   verification.md                   Como provar que cada controle vale, e o ferramental de scanner
   live-surfaces.md                  Conferir e mudar a config real, provedor por provedor
@@ -289,7 +290,59 @@ assets/                             Artefatos para copiar, leia antes de rodar
   ci-security.yml                   Pipeline: varredura de segredo, de dependência e estática
   probe.sh                          Sonda externa de pré-lançamento, só leitura
   tenancy.test.example.ts           Os testes que provam o isolamento entre clientes
+evals/                              Como este pacote é testado, veja abaixo
+  validate.py                       Integridade do pacote, sem precisar de modelo
+  run.py                            Quatorze pares de arquivo, pontuados por um agente
+  cases/                            Um defeito plantado por camada, e o gêmeo consertado
 ```
+
+---
+
+## Como este pacote é testado
+
+Orientação que nunca foi testada é opinião bem diagramada. Esta vem com o
+ferramental que testa ela, e esse ferramental roda na sua máquina, não na
+palavra de ninguém.
+
+**Cada caso é um par.** Um arquivo com um defeito plantado, e o mesmo arquivo com
+aquele defeito consertado. O agente revisa os dois sem saber qual é qual.
+
+| Variante | Resultado exigido | O que isso prova |
+|---|---|---|
+| `vulnerable/` | o defeito aparece no relatório | a checagem pega o que ela existe para pegar |
+| `fixed/` | o defeito não aparece | a checagem também sabe ficar quieta |
+
+A segunda metade é o que importa. Checagem que dispara em tudo não é checagem, é
+alarme emperrado, e ela passa em qualquer bateria que só dê defeito para ela
+comer.
+
+É um caso por camada, quatorze no total: tabela criada sem row security, registro
+buscado sem condição de dono, token lido sem conferir assinatura, container
+rodando como root com credencial cozida numa camada da imagem, pipeline
+compilando código de estranho com os segredos do repositório à mão, chave
+privilegiada exportada para o bundle do navegador, webhook sem assinatura
+liberando plano pago, conteúdo de página não confiável chegando numa ferramenta
+de banco. Camada sem caso reprova no validador, pela mesma razão que a skill
+recusa matriz de cobertura com célula em branco.
+
+```
+python evals/validate.py            # selo de versão, READMEs espelhados, links, cobertura
+python evals/run.py --self-test     # prova que o placar sabe reprovar, não chama nada
+python evals/run.py                 # a bateria inteira, 28 chamadas de modelo
+python evals/run.py --arm baseline  # a mesma revisão sem a skill carregada
+```
+
+O `validate.py` só precisa de Python. O `run.py` precisa da ferramenta de linha
+de comando `claude`, que você já tem, e de nenhuma chave de API.
+
+A mesma ideia está escrita no método, como controle negativo em
+`references/verification.md`: antes de dar uma checagem por aprovada, quebre o
+controle de propósito uma vez e veja a checagem ficar vermelha. É nesse minuto
+que se descobre que a checagem apontava para um mock, para o estado atual em vez
+do histórico, ou para uma lista de rotas que parou de ser atualizada.
+
+O `evals/README.md` diz o que a bateria **não** prova, e vale ler isso antes de
+citar qualquer resultado.
 
 ---
 

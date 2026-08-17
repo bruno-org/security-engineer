@@ -1,0 +1,15 @@
+{
+  "id": "11-public-exposure-source-served",
+  "title": "The whole project directory is published, with a debug route on top",
+  "layer": 11,
+  "layer_name": "Public exposure",
+  "defaults": [
+    4
+  ],
+  "fixture": "server.js",
+  "signature": [
+    "(?i)\\.env|\\.git|source (code )?(is )?(exposed|disclos|served|readable)|serves? (the )?(entire|whole|project|root|repository)|directory",
+    "(?i)debug (route|endpoint|handler)|process\\.env|x-powered-by|version disclosur"
+  ],
+  "why": "Pointing the static handler at the project root publishes the environment file and the repository directory. A scanner requests both paths within minutes of the host answering."
+}

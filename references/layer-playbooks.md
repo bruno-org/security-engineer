@@ -317,7 +317,16 @@ The most common entry point for the automated attacker.
 - Vendoring or an internal registry mirror for critical dependencies.
 - Allowlisting which packages may be installed.
 
-**Acceptance check.** Run the vulnerability scanner. Zero known high or critical severity issues in production dependencies, or each one documented with a reason and a date.
+**Triaging what the scanner returns.** A scanner hands back a queue, not a plan. Sorted by severity alone that queue never empties, the team stops reading it within a month, and the one advisory that mattered sits behind twenty that did not. Order it by four questions, in this order, and write the answer next to each item:
+
+1. **Is it being exploited right now?** The known exploited vulnerabilities catalogue published by CISA is the shortest list that matters, because everything on it has confirmed exploitation in the wild rather than a theoretical score. Fetch the catalogue and check your advisory identifiers against it rather than recalling what is on it. A hit jumps the whole queue, whatever its severity number says, and is handled today.
+2. **Can the vulnerable code be reached from this system?** An advisory in a package that ships to production, on a code path the application actually calls, is a different object from the same advisory in a build-only dependency or in a function nobody imports. Say which one it is. Unreachable does not mean dismissed, it means scheduled.
+3. **How likely is the attempt in the open?** Severity describes the worst case if it is exploited. The exploit prediction score published for each identifier estimates whether anyone is trying. High severity with negligible probability on an unreachable path is a scheduled upgrade. Medium severity on a reachable path with a public exploit is this week.
+4. **Does a fix exist, and can you take it?** Frequently the fix lives in a transitive dependency your direct one has not adopted yet, so the choice is an override, a pin, a replacement, or a documented wait. When no fix exists at all, the outcome is a mitigation with an owner and a revisit date, never a silent exception.
+
+**Suppressions expire.** Every accepted advisory carries the reason, the owner, and the date it gets looked at again. A suppression with no expiry outlives everyone who understood why it was safe, and it is indistinguishable from a hole nobody noticed.
+
+**Acceptance check.** Run the vulnerability scanner and show the queue after triage: nothing that appears on the known exploited catalogue, nothing reachable in production at high or critical severity, and every remaining item carrying a reason, an owner, and an expiry date. Confirm the scan runs on a schedule as well as on commit, since advisories land for code nobody touched.
 
 **Friction.** Rank 2, developers only.
 

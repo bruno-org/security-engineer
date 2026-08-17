@@ -1,0 +1,14 @@
+{
+  "id": "03-data-store-rls-missing",
+  "title": "New table ships with no row security and a table-wide grant",
+  "layer": 3,
+  "layer_name": "Data store",
+  "defaults": [
+    1
+  ],
+  "fixture": "migration.sql",
+  "signature": [
+    "(?i)row[- ]level security|\\bRLS\\b|no polic|deny by default|enable row|any (client|caller|anon)"
+  ],
+  "why": "The application filters by tenant, so it looks correct. The client key talks to the database directly, and with no policy the filter is advisory."
+}

@@ -130,5 +130,9 @@ coverage/
 *.tgz
 *.tsbuildinfo
 
+# Eval output. The cases are tracked, the results of a run are not.
+/evals/results/
+/evals/*.json
+
 # Local working files, kept on the machine and never published
 /cabeca-ilustracao-transparente.png

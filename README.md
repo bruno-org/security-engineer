@@ -18,7 +18,7 @@ system is designed and built, and makes it come out right the first time.
 ![Version 1.0.0](https://img.shields.io/badge/version-1.0.0-black)
 ![Updated 2026-08-17](https://img.shields.io/badge/updated-2026--08--17-brightgreen)
 
-<sub>Last updated <b>2026-08-17 01:59 (UTC-3)</b>, version <b>1.0.0</b></sub>
+<sub>Last updated <b>2026-08-17 10:20 (UTC-3)</b>, version <b>1.0.0</b></sub>
 
 [Portugu&ecirc;s do Brasil](README.pt-BR.md)
 
@@ -255,6 +255,7 @@ references/
   threat-model.md                   The two adversaries, and what each implies at design time
   layer-playbooks.md                Thirteen layers: decisions, controls, acceptance checks, friction
   app-defaults.md                   The five defaults, with secure patterns and their insecure twins
+  change-review.md                  Reviewing one diff: what it hides, and the bar a finding clears
   stack-profiles.md                 What changes from serverless to self-hosted to local-only
   verification.md                   How to prove controls hold, plus the scanner toolkit
   live-surfaces.md                  Verifying and changing real config, provider by provider
@@ -270,7 +271,59 @@ assets/                             Copyable artifacts, read before running
   ci-security.yml                   Pipeline: secret, dependency, and static scanning
   probe.sh                          External pre-launch probe, read-only
   tenancy.test.example.ts           The cross-tenant denial tests
+evals/                              How this package is tested, see below
+  validate.py                       Package integrity, no model needed
+  run.py                            Fourteen paired fixtures, scored by an agent
+  cases/                            One planted defect per layer, and its repaired twin
 ```
+
+---
+
+## How this package is tested
+
+Guidance that has never been tested is an opinion with formatting. This one ships
+with the harness that tests it, and the harness runs on your machine, not on a
+promise.
+
+**Every case is a pair.** One file with a single planted defect, and the same file
+with that defect repaired. The agent reviews both, and is never told which is
+which.
+
+| Variant | Required outcome | What it proves |
+|---|---|---|
+| `vulnerable/` | the defect is reported | the check catches what it exists to catch |
+| `fixed/` | the defect is not reported | the check can also stay quiet |
+
+The second half is the point. A check that fires on everything is not a check, it
+is a stuck alarm, and it passes any suite that only ever feeds it broken input.
+
+There is one case per layer, fourteen in all: a table created without row
+security, a record fetched with no ownership condition, a token decoded but never
+verified, a container running as root with a credential baked into a layer, a
+pipeline building a stranger's code with repository secrets in scope, a
+privileged key exported into the browser bundle, an unsigned webhook granting a
+paid plan, untrusted page content reaching a database tool. If a layer has no
+case, the validator fails, for the same reason the skill refuses a coverage
+matrix with a blank cell in it.
+
+```
+python evals/validate.py       # release stamp, mirrored READMEs, links, coverage
+python evals/run.py --self-test   # prove the scorer can fail, calls nothing
+python evals/run.py               # the full suite, 28 model calls
+python evals/run.py --arm baseline  # the same review with the skill absent
+```
+
+`validate.py` needs nothing but Python. `run.py` needs the `claude` command line
+tool you already have, and no API key.
+
+The same idea is written into the method itself, as the negative control in
+`references/verification.md`: before an acceptance check counts as passing, break
+the control on purpose once and watch the check go red. That single minute is
+where checks are found to be pointed at a mock, at the working tree instead of
+the history, or at a route list that stopped being updated.
+
+`evals/README.md` states what the suite does not prove, which is worth reading
+before quoting a result.
 
 ---
 

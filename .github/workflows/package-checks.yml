@@ -1,0 +1,37 @@
+# Integrity checks for this package. Everything here runs offline: the release
+# stamp, the mirrored READMEs, the links, the acceptance check per layer, the
+# eval coverage, and the proof that the scorer can fail.
+#
+# The scored eval run is deliberately not here. It calls a model with an
+# authenticated session, which belongs on a machine, not in a public runner.
+# Run it locally before a release: python evals/run.py
+
+name: Package checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      # Pinned by commit, so a moved tag cannot change what runs here.
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.11'
+
+      - name: Package integrity
+        run: python evals/validate.py
+
+      - name: The scorer can fail
+        run: python evals/run.py --self-test
+
+      - name: Every case is well formed
+        run: python evals/run.py --dry-run

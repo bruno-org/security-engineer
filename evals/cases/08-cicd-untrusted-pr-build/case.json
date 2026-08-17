@@ -1,0 +1,15 @@
+{
+  "id": "08-cicd-untrusted-pr-build",
+  "title": "Pipeline builds a fork's code with write permission and repository secrets",
+  "layer": 8,
+  "layer_name": "CI/CD and pipeline",
+  "defaults": [
+    4
+  ],
+  "fixture": "ci.yml",
+  "signature": [
+    "(?i)pull_request_target|untrusted code|fork(ed)?[- ]|attacker[- ]controlled (code|branch|pr)",
+    "(?i)write-all|permissions|secrets? (are )?(exposed|available|reachable|leak)|unpinned action|@(master|main)\\b"
+  ],
+  "why": "pull_request_target runs with the base repository's secrets and token. Checking out the pull request head then executes a stranger's build script with those credentials in scope."
+}
