@@ -74,19 +74,14 @@ A report SHOULD include:
 
 A report MAY include a suggested patch. It is useful and it is not required.
 
-## Response times
+## Response
 
-This project is maintained by one person. These are the targets:
+This project is maintained by one person, so there is no committed response window and no service
+level of any kind. Reports are read and triaged by severity: guidance that is actively dangerous is
+handled first, and everything else follows as time allows.
 
-| Stage | Target |
-|---|---|
-| Acknowledgement of your report | 5 business days |
-| Assessment: confirmed or declined, with reasoning | 14 days after acknowledgement |
-| Fix merged for confirmed dangerous guidance | 30 days after assessment |
-| Fix merged for lower severity findings | The next release |
-
-If a target slips you get a status update with a new date. Silence is a bug in the process, so send
-a reminder through the same channel if a target passes without a reply.
+You will get a reply. If a report sits without one for longer than seems reasonable to you, send a
+reminder through the same channel.
 
 Once a fix is released, you are free to discuss the finding publicly. Ask first if you want to
 publish before the fix lands, and we will agree on a date.

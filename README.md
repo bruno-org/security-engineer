@@ -322,7 +322,7 @@ verification instead of quietly assumed to be fine.
 Found a problem in the skill itself, an unsafe instruction, a weak default, an acceptance check that
 passes when it should fail?
 **[Report it privately](https://github.com/bruno-org/security-engineer/security/advisories/new).**
-`SECURITY.md` has the process and the response times.
+`SECURITY.md` has the process and what is in scope.
 
 If what you found is not a security problem, [open an
 issue](https://github.com/bruno-org/security-engineer/issues/new).

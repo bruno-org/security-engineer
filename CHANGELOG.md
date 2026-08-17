@@ -71,6 +71,6 @@ configuration change. It performs no conformance assessment and produces no cert
   `tenancy.test.example.ts` (the cross-tenant denial suite run as an unprivileged client).
 - `README.md` and `README.pt-BR.md`, the same overview in English and in Brazilian Portuguese, with
   `docs/img/cover.png`, the cover image both of them display.
-- `SECURITY.md` (reporting process and response targets), `.gitignore`, and `LICENSE` (MIT).
+- `SECURITY.md` (what is in scope and how to report it), `.gitignore`, and `LICENSE` (MIT).
 - Mapping onto the OWASP Top 10 and the OWASP API Security Top 10, fetched at run time so the
   category identifiers match the current revision, with the revision and year named in the output.
