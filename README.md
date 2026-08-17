@@ -287,56 +287,17 @@ evals/                              How this package is tested, see below
 
 ---
 
-## How this package is tested
+## How this package was tested
 
-Guidance that has never been tested is an opinion with formatting. This one ships
-with the harness that tests it, and the harness runs on your machine, not on a
-promise.
+Not how it reviews your system: how this material was checked while it was being
+written, so what you install is verified rather than asserted.
 
-**Every case is a pair.** One file with a single planted defect, and the same file
-with that defect repaired. The agent reviews both, and is never told which is
-which.
-
-| Variant | Required outcome | What it proves |
-|---|---|---|
-| `vulnerable/` | the defect is reported | the check catches what it exists to catch |
-| `fixed/` | the defect is not reported | the check can also stay quiet |
-
-The second half is the point. A check that fires on everything is not a check, it
-is a stuck alarm, and it passes any suite that only ever feeds it broken input.
-
-There is one case per layer, fourteen in all: a table created without row
-security, a record fetched with no ownership condition, a token decoded but never
-verified, a container running as root with a credential baked into a layer, a
-pipeline building a stranger's code with repository secrets in scope, a
-privileged key exported into the browser bundle, an unsigned webhook granting a
-paid plan, untrusted page content reaching a database tool. If a layer has no
-case, the validator fails, for the same reason the skill refuses a coverage
-matrix with a blank cell in it.
-
-```
-python evals/validate.py       # release stamp, mirrored READMEs, links, coverage
-python evals/run.py --self-test   # prove the scorer can fail, calls nothing
-python evals/run.py               # the full suite, 28 model calls
-python evals/run.py --arm baseline  # the same review with the skill absent
-```
-
-`validate.py` needs nothing but Python. `run.py` needs the `claude` command line
-tool you already have, and no API key.
-
-The same idea is written into the method itself, as the negative control in
-`references/verification.md`: before an acceptance check counts as passing, break
-the control on purpose once and watch the check go red. That single minute is
-where checks are found to be pointed at a mock, at the working tree instead of
-the history, or at a route list that stopped being updated.
-
-**What it is not:** a scoreboard. Run the baseline arm and a capable model catches
-most of these on its own, which is the expected result, because a planted defect
-in a thirty line file is the easy half of the job. What the skill adds is the
-walk that visits the layer nobody remembers, the live setting nobody read, and
-the ranking of what a control costs the people using the product. None of that
-fits in one file. `evals/README.md` states the rest of what the suite does not
-prove, and it is worth reading before quoting a result.
+Every layer here is exercised against a pair of files: one carrying a planted
+defect, and the same file with that defect repaired. The defect has to be
+reported on the first and left alone on the second, so material that flags
+everything fails the suite instead of passing it. Fourteen pairs, one per layer,
+and they run on your machine with `python evals/run.py`. The method, and what the
+suite does not prove, are in `evals/README.md`.
 
 ---
 

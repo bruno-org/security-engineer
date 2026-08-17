@@ -306,56 +306,17 @@ evals/                              Como este pacote é testado, veja abaixo
 
 ---
 
-## Como este pacote é testado
+## Como este pacote foi testado
 
-Orientação que nunca foi testada é opinião bem diagramada. Esta vem com o
-ferramental que testa ela, e esse ferramental roda na sua máquina, não na
-palavra de ninguém.
+Não é como ela revisa o seu sistema: é como este material foi conferido enquanto
+era escrito, para o que você instala ser verificado em vez de afirmado.
 
-**Cada caso é um par.** Um arquivo com um defeito plantado, e o mesmo arquivo com
-aquele defeito consertado. O agente revisa os dois sem saber qual é qual.
-
-| Variante | Resultado exigido | O que isso prova |
-|---|---|---|
-| `vulnerable/` | o defeito aparece no relatório | a checagem pega o que ela existe para pegar |
-| `fixed/` | o defeito não aparece | a checagem também sabe ficar quieta |
-
-A segunda metade é o que importa. Checagem que dispara em tudo não é checagem, é
-alarme emperrado, e ela passa em qualquer bateria que só dê defeito para ela
-comer.
-
-É um caso por camada, quatorze no total: tabela criada sem row security, registro
-buscado sem condição de dono, token lido sem conferir assinatura, container
-rodando como root com credencial cozida numa camada da imagem, pipeline
-compilando código de estranho com os segredos do repositório à mão, chave
-privilegiada exportada para o bundle do navegador, webhook sem assinatura
-liberando plano pago, conteúdo de página não confiável chegando numa ferramenta
-de banco. Camada sem caso reprova no validador, pela mesma razão que a skill
-recusa matriz de cobertura com célula em branco.
-
-```
-python evals/validate.py            # selo de versão, READMEs espelhados, links, cobertura
-python evals/run.py --self-test     # prova que o placar sabe reprovar, não chama nada
-python evals/run.py                 # a bateria inteira, 28 chamadas de modelo
-python evals/run.py --arm baseline  # a mesma revisão sem a skill carregada
-```
-
-O `validate.py` só precisa de Python. O `run.py` precisa da ferramenta de linha
-de comando `claude`, que você já tem, e de nenhuma chave de API.
-
-A mesma ideia está escrita no método, como controle negativo em
-`references/verification.md`: antes de dar uma checagem por aprovada, quebre o
-controle de propósito uma vez e veja a checagem ficar vermelha. É nesse minuto
-que se descobre que a checagem apontava para um mock, para o estado atual em vez
-do histórico, ou para uma lista de rotas que parou de ser atualizada.
-
-**O que ela não é:** placar. Rode o braço baseline e um modelo bom pega quase
-todos esses defeitos sozinho, e isso é o resultado esperado, porque defeito
-plantado em arquivo de trinta linhas é a parte fácil do serviço. O que a skill
-acrescenta é a passada que visita a camada de que ninguém lembra, a configuração
-viva que ninguém leu, e a conta de quanto cada controle custa para quem usa o
-produto. Nada disso cabe num arquivo só. O `evals/README.md` diz o resto do que
-a bateria **não** prova, e vale ler antes de citar qualquer resultado.
+Cada camada aqui é exercitada contra um par de arquivos: um com um defeito
+plantado, e o mesmo arquivo com aquele defeito consertado. O defeito precisa
+aparecer no primeiro e não aparecer no segundo, então material que acusa tudo
+reprova na bateria em vez de passar. São quatorze pares, um por camada, e rodam
+na sua máquina com `python evals/run.py`. O método, e o que a bateria não prova,
+estão no `evals/README.md`.
 
 ---
 
