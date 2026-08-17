@@ -129,3 +129,6 @@ out/
 coverage/
 *.tgz
 *.tsbuildinfo
+
+# Local working files, kept on the machine and never published
+/cabeca-ilustracao-transparente.png
