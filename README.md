@@ -287,20 +287,6 @@ evals/                              How this package is tested, see below
 
 ---
 
-## How this package was tested
-
-Not how it reviews your system: how this material was checked while it was being
-written, so what you install is verified rather than asserted.
-
-Every layer here is exercised against a pair of files: one carrying a planted
-defect, and the same file with that defect repaired. The defect has to be
-reported on the first and left alone on the second, so material that flags
-everything fails the suite instead of passing it. Fourteen pairs, one per layer,
-and they run on your machine with `python evals/run.py`. The method, and what the
-suite does not prove, are in `evals/README.md`.
-
----
-
 ## OWASP mapping
 
 Ask for traceability and the skill fetches the **current OWASP Top 10** and **OWASP API Security

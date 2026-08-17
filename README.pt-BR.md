@@ -306,20 +306,6 @@ evals/                              Como este pacote é testado, veja abaixo
 
 ---
 
-## Como este pacote foi testado
-
-Não é como ela revisa o seu sistema: é como este material foi conferido enquanto
-era escrito, para o que você instala ser verificado em vez de afirmado.
-
-Cada camada aqui é exercitada contra um par de arquivos: um com um defeito
-plantado, e o mesmo arquivo com aquele defeito consertado. O defeito precisa
-aparecer no primeiro e não aparecer no segundo, então material que acusa tudo
-reprova na bateria em vez de passar. São quatorze pares, um por camada, e rodam
-na sua máquina com `python evals/run.py`. O método, e o que a bateria não prova,
-estão no `evals/README.md`.
-
----
-
 ## Mapeamento com o OWASP
 
 Peça rastreabilidade e a skill busca o **OWASP Top 10** e o **OWASP API Security Top 10** na versão
